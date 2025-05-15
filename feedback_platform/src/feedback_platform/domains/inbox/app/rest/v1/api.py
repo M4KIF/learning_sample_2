@@ -30,8 +30,8 @@ class InboxRestWebApiV1():
     async def create_inbox(self, session: SqliteSessionDep, username: str, password: str, request: Request, response: Response, dto: pydantic.Json[Creation] = Body(...)):
         try:
             uuid = await self.factory.NewCreateInboxUseCase(
-                self.inbox_management_adapter_factory.new(session=session)
-                ).execute(dto.dict(), username, password)
+                self.inbox_management_adapter_factory.new()
+                ).execute(dto.dict(), username, password, session)
         except FailedToStoreItem as e:
             response.status_code = 500
         else:

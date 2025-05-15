@@ -9,7 +9,7 @@ class CreateInboxUseCase():
         self.inbox_management = inbox_management
         self.tripcode_management = tripcode_management
 
-    async def execute(self, inbox_values: dict(), user: str, password: str) -> str:
+    async def execute(self, inbox_values: dict(), user: str, password: str, session) -> str:
 
         # Creating and populating the model
         print(inbox_values)
@@ -20,9 +20,10 @@ class CreateInboxUseCase():
 
         # Storing the created data
         try:
-            await self.inbox_management.create_new_inbox(inbox.dict())
+            uuid = await self.inbox_management.create_new_inbox(inbox.dict(), session=session)
         except Exception as e:
-            print("Failed to store an item :-> " + e.args())
-            raise FailedToStoreItem()
+            print("Failed to store an item :-> " + e.__str__())
+        else:
+            return str(uuid)
         
         return str(inbox_values)

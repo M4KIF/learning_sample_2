@@ -65,9 +65,29 @@ class DatabaseSessionManager:
             await session.close()
 
 
-sessionmanager = DatabaseSessionManager("sqlite+aiosqlite:///.feedback_platform.db")
+sessionmanager = DatabaseSessionManager("sqlite+aiosqlite:///feedback_platform.sqlite")
 
 
 async def get_db_session():
     async with sessionmanager.session() as session:
         yield session
+
+# from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+# from sqlalchemy.orm import sessionmaker
+# from sqlalchemy.ext.declarative import declarative_base
+# from contextlib import asynccontextmanager
+# from typing import AsyncGenerator
+
+# DATABASE_URL = "sqlite+aiosqlite:///feedback_platform.sqlite"
+
+# engine = create_async_engine(DATABASE_URL, echo=True)
+# AsyncSessionLocal = sessionmaker(
+#     bind=engine,
+#     class_=AsyncSession,
+#     expire_on_commit=False,
+# )
+
+# @asynccontextmanager
+# async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
+#     async with AsyncSessionLocal() as session:
+#         yield session
